@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js cookie</title>
+</head>
+<body>
+
+<h1>js 操作 cookie</h1>
+
+demo:
+<hr />
+<a href="#" class="add" data-cname="a" data-cval="a_value" data-cpath=";path=/test/">添加 localhost/test/ 下的cookie "a"</a>
+<br>
+<br>
+<br>
+<a href="#" class="del" data-cname="a" data-cpath=";path=/test/">删除cookie "a"</a>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<a href="#" class="add" data-cname="b" data-cval="b_value">添加 localhost/ 下的cookie "b"</a>
+<br>
+<br>
+<br>
+<a href="#" data-cname="b" class="del">删除cookie "b"</a>
+
+<script src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    var jsCookie = {
+        setCookie: function(name, value, exptime, path) {
+            if (!path){
+                //path = ';path=/test/'
+                path = ';path=/'
+            }
+            var now = new Date();
+            var time = now.getTime();//getTime() 方法可返回距 1970 年 1 月 1 日之间的毫秒数
+            //var anhour = (exptime+9)*3600;//以小时为单位，中国时间要加8小时+1小时
+            var days = (exptime*24+8)*3600;//以天为单位，中国时间加8小时+24小时
+            time += days * 1000; //now 毫秒 + 天数毫秒
+            now.setTime(time);
+            document.cookie = name+'='+value+';expires='+now.toUTCString()+path;
+        },
+        getCookie: function (name){
+            var cArr=document.cookie.split('; ');
+            for(var i=0;i<cArr.length;i++){
+                var cArr2=cArr[i].split('=');
+                if(cArr2[0]==name){
+                    return cArr2[1];
+                }
+            }
+            return '';
+        },
+        removeCookie:function (name, path){
+            jsCookie.setCookie(name, '', -1, path);
+        }
+    }
+
+    $('.add').on('click',function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var theCname = $this.data('cname');
+        var theCval = $this.data('cval');
+        var theCpath = $this.data('cpath');
+        jsCookie.setCookie(theCname,theCval,1,theCpath);
+    });
+
+    $('.del').on('click',function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var theCname = $this.data('cname');
+        var theCpath = $this.data('cpath');
+        jsCookie.removeCookie(theCname,theCpath);
+    });
+</script>
+
+</body>
+</html>
