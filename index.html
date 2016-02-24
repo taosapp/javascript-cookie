@@ -1,48 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cmn-Hans">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>js cookie</title>
+    <style>
+        body {font:14px/2em Helvetica,Hiragino Sans GB,Microsoft Yahei,sans-serif;color:#333;}
+        h2 {font-weight: normal; font-size: 14px;}
+        a {background-color: #5A5AAD; dispaly:inline-block; color:#fff; padding:5px 20px; text-decoration: none; margin-left: 100px;}
+        a:visited {background-color: #ccc;}
+    </style>
 </head>
 <body>
 
 <h1>js 操作 cookie</h1>
 
-demo:
-<hr />
-<a href="#" class="add" data-cname="a" data-cval="a_value" data-cpath=";path=/test/">添加 localhost/test/ 下的cookie "a"</a>
-<br>
-<br>
-<br>
-<a href="#" class="del" data-cname="a" data-cpath=";path=/test/">删除cookie "a"</a>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<a href="#" class="add" data-cname="b" data-cval="b_value">添加 localhost/ 下的cookie "b"</a>
-<br>
-<br>
-<br>
-<a href="#" data-cname="b" class="del">删除cookie "b"</a>
+<h2>在“根目录/testdir/”下添加一个cookie：xiaoming:170cm</h2>
+<a href="#" class="add" data-cname="xiaoming" data-cval="170cm" data-cpath="/">添加</a>
+<h2>删除“根目录/testdir/”下的cookie：xiaoming</h2>
+<a href="#" class="del" data-cname="xiaoming" data-cpath="/">删除</a>
+<hr>
+<h2>在“根目录”下添加一个cookie：xiaozhang:180cm</h2>
+<a href="#" class="add" data-cname="xiaozhang" data-cval="180cm">添加</a>
+<h2>删除“根目录”下的cookie：xiaozhang</h2>
+<a href="#" data-cname="xiaozhang" class="del">删除</a>
 
 <script src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
     var jsCookie = {
-        setCookie: function(name, value, exptime, path) {
-            if (!path){
-                //path = ';path=/test/'
-                path = ';path=/'
-            }
+        setCookie: function(name, value, exptime, thepath) {
             var now = new Date();
-            var time = now.getTime();//getTime() 方法可返回距 1970 年 1 月 1 日之间的毫秒数
-            //var anhour = (exptime+9)*3600;//以小时为单位，中国时间要加8小时+1小时
-            var days = (exptime*24+8)*3600;//以天为单位，中国时间加8小时+24小时
+            var thePath = '';
+            var time = now.getTime(); //getTime() 方法可返回距 1970 年 1 月 1 日之间的毫秒数
+            //var anhour = (exptime+9)*3600; //以小时为单位，中国时间1小时要加8小时
+            var days = (exptime*24+8)*3600; //以天为单位，中国时间24小时要加8小时
             time += days * 1000; //now 毫秒 + 天数毫秒
             now.setTime(time);
-            document.cookie = name+'='+value+';expires='+now.toUTCString()+path;
+            document.cookie = name+'='+value+';expires='+now.toUTCString()+';path='+thepath;
         },
         getCookie: function (name){
             var cArr=document.cookie.split('; ');
