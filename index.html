@@ -24,7 +24,7 @@ a:visited {background-color: #ccc;}
 </style>
 </head>
 <body>
-<h1>js 操作 cookie</h1>
+<h1>javascript cookie</h1>
 <h2>在“http://taoland.github.io/”根目录下添加一个cookie：xiaoming:170cm</h2>
 <a href="#" class="add" data-cname="xiaoming" data-cval="170cm" data-cpath="/">添加</a>
 <h2>删除“http://taoland.github.io/”下的cookie：xiaoming</h2>
@@ -35,49 +35,27 @@ a:visited {background-color: #ccc;}
 <h2>删除“http://taoland.github.io/javascript-cookie/”下的cookie：xiaozhang</h2>
 <a href="#" data-cname="xiaozhang" class="del">删除</a>
 
-<script src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-    var jsCookie = {
-        setCookie: function(name, value, exptime, thepath) {
-            var now = new Date();
-            var thePath = '';
-            var time = now.getTime(); //getTime() 方法可返回距 1970 年 1 月 1 日之间的毫秒数
-            //var anhour = (exptime+9)*3600; //以小时为单位，中国时间1小时要加8小时
-            var days = (exptime*24+8)*3600; //以天为单位，中国时间24小时要加8小时
-            time += days * 1000; //now 毫秒 + 天数毫秒
-            now.setTime(time);
-            document.cookie = name+'='+value+';expires='+now.toUTCString()+';path='+thepath;
-        },
-        getCookie: function (name){
-            var cArr=document.cookie.split('; ');
-            for(var i=0;i<cArr.length;i++){
-                var cArr2=cArr[i].split('=');
-                if(cArr2[0]==name){
-                    return cArr2[1];
-                }
-            }
-            return '';
-        },
-        removeCookie:function (name, path){
-            jsCookie.setCookie(name, '', -1, path);
-        }
-    }
+<script type="module">
+    import javascriptCookie from './javascript-cookie.js';
 
-    $('.add').on('click',function (e) {
+    const btnAdd = document.querySelector('.add');
+    const btndel = document.querySelector('.del');
+
+    btnAdd.addEventListener('click', function (e) {
         e.preventDefault();
-        var $this = $(this);
-        var theCname = $this.data('cname');
-        var theCval = $this.data('cval');
-        var theCpath = $this.data('cpath');
-        jsCookie.setCookie(theCname,theCval,1,theCpath);
+        let cookieName = this.dataset.cname;
+        let cookieVal = this.dataset.cval;
+        let cookiePath = this.dataset.cpath;
+        // setCookie(name, value, exptime, thepath)
+        javascriptCookie.set(cookieName, cookieVal, 1, cookiePath);
     });
 
-    $('.del').on('click',function (e) {
+    btndel.addEventListener('click', function (e) {
         e.preventDefault();
-        var $this = $(this);
-        var theCname = $this.data('cname');
-        var theCpath = $this.data('cpath');
-        jsCookie.removeCookie(theCname,theCpath);
+        let theCname = this.dataset.cname;
+        let theCpath = this.dataset.cpath;
+
+        javascriptCookie.remove(theCname, theCpath);
     });
 </script>
 
